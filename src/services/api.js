@@ -1,6 +1,8 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
 
+const API_URL = 'http://localhost:8080';
+
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }
@@ -110,8 +112,22 @@ export async function fakeAccountLogin(params) {
   });
 }
 
+export async function accountLogin(params) {
+  return request(API_URL + '/login', {
+    method: 'POST',
+    body: params,
+  });
+}
+
 export async function fakeRegister(params) {
   return request('/api/register', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function register(params) {
+  return request(API_URL + '/register', {
     method: 'POST',
     body: params,
   });

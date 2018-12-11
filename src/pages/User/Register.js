@@ -50,7 +50,7 @@ class Register extends Component {
 
   componentDidUpdate() {
     const { form, register } = this.props;
-    const account = form.getFieldValue('mail');
+    const account = form.getFieldValue('user[email]');
     if (register.status === 'ok') {
       router.push({
         pathname: '/user/register-result',
@@ -79,7 +79,7 @@ class Register extends Component {
 
   getPasswordStatus = () => {
     const { form } = this.props;
-    const value = form.getFieldValue('password');
+    const value = form.getFieldValue('user[password]');
     if (value && value.length > 9) {
       return 'ok';
     }
@@ -114,7 +114,7 @@ class Register extends Component {
 
   checkConfirm = (rule, value, callback) => {
     const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
+    if (value && value !== form.getFieldValue('user[password]')) {
       callback(formatMessage({ id: 'validation.password.twice' }));
     } else {
       callback();
@@ -158,7 +158,7 @@ class Register extends Component {
 
   renderPasswordProgress = () => {
     const { form } = this.props;
-    const value = form.getFieldValue('password');
+    const value = form.getFieldValue('user[password]');
     const passwordStatus = this.getPasswordStatus();
     return value && value.length ? (
       <div className={styles[`progress-${passwordStatus}`]}>
@@ -184,7 +184,7 @@ class Register extends Component {
         </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
-            {getFieldDecorator('mail', {
+            {getFieldDecorator('user[email]', {
               rules: [
                 {
                   required: true,
@@ -192,7 +192,9 @@ class Register extends Component {
                 },
                 {
                   type: 'email',
-                  message: formatMessage({ id: 'validation.email.wrong-format' }),
+                  message: formatMessage({
+                    id: 'validation.email.wrong-format',
+                  }),
                 },
               ],
             })(
@@ -215,7 +217,7 @@ class Register extends Component {
               placement="right"
               visible={visible}
             >
-              {getFieldDecorator('password', {
+              {getFieldDecorator('user[password]', {
                 rules: [
                   {
                     validator: this.checkPassword,
@@ -225,17 +227,21 @@ class Register extends Component {
                 <Input
                   size="large"
                   type="password"
-                  placeholder={formatMessage({ id: 'form.password.placeholder' })}
+                  placeholder={formatMessage({
+                    id: 'form.password.placeholder',
+                  })}
                 />
               )}
             </Popover>
           </FormItem>
           <FormItem>
-            {getFieldDecorator('confirm', {
+            {getFieldDecorator('user[confirm]', {
               rules: [
                 {
                   required: true,
-                  message: formatMessage({ id: 'validation.confirm-password.required' }),
+                  message: formatMessage({
+                    id: 'validation.confirm-password.required',
+                  }),
                 },
                 {
                   validator: this.checkConfirm,
@@ -245,11 +251,14 @@ class Register extends Component {
               <Input
                 size="large"
                 type="password"
-                placeholder={formatMessage({ id: 'form.confirm-password.placeholder' })}
+                placeholder={formatMessage({
+                  id: 'form.confirm-password.placeholder',
+                })}
               />
             )}
           </FormItem>
-          <FormItem>
+          {/* commented out to be used later - todo adding phone number verication */}
+          {/* <FormItem>
             <InputGroup compact>
               <Select
                 size="large"
@@ -310,7 +319,7 @@ class Register extends Component {
                 </Button>
               </Col>
             </Row>
-          </FormItem>
+          </FormItem> */}
           <FormItem>
             <Button
               size="large"
